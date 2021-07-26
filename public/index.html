@@ -10,11 +10,29 @@
 </head>
 
 <script>
+  // define some functions
+
+  // function to get the value of a single dice roll
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max) + 1;
+  }
+
+  function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay;
+  }
+
+  // wait for dom content before adding listeners
   document.addEventListener('DOMContentLoaded', (event) => {
-    // function to get the value of a single dice roll
-    function getRandomInt(max) {
-      return Math.floor(Math.random() * max) + 1;
-    }
+
+
 
     // add a listener to the roll button
     var rollBtn = document.getElementById('rollBtn');
@@ -28,6 +46,9 @@
       // update the result of the roll and the number of rolls
       document.getElementById('rollSum').innerHTML = sum
       document.getElementById('numberRolls').innerHTML = parseInt(document.getElementById('numberRolls').innerHTML) + 1
+
+      // up
+      document.getElementById('simulatedTime').innerHTML = secondsToHms(parseInt(document.getElementById('numberRolls').innerHTML) * 25)
 
 
 
@@ -90,14 +111,11 @@
     })
   });
 
-  document.getElementById('simulateSlowBtn').addEventListener('click', () => {
-    // console.log(document.getElementById('simulateSlowBtn').innerHTML)
+  setInterval(function () {
+    rollBtn.click()
+  }, 1);
 
-    // while (document.getElementById('simulateSlowBtn').innerHTML === 'Stop simulation')
-    //   setInterval(function () {
-    //     rollBtn.click()
-    //   }, 1000);
-  })
+
 
 
 </script>
@@ -141,6 +159,11 @@
         <p id="numberRolls">0</p>
       </div>
 
+      <div style="display: flex; justify-content: center;">
+        <p>Simulated seconds at table (assuming 25 seconds between roll): &nbsp;</p>
+        <p id="simulatedTime">0</p>
+      </div>
+
       <div style="display: flex; justify-content: center;margin: 20px;">
 
         <div
@@ -148,6 +171,8 @@
           <p style="color: forestgreen;">Last roll: &nbsp;</p>
           <p id="rollSum" style="color: forestgreen;font-size: 30px;">--</p>
         </div>
+
+
 
         <div
           style="display: flex; justify-content: center; flex-direction: column;padding: 20px; width: 200px;background-color:forestgreen">
