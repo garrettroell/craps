@@ -1,0 +1,10 @@
+body {
+  background: #5e814d;
+  /* background-image: url("craps_table.png"); */
+  /* background-size: cover; */
+  /* object-fit: contain; */
+}
+
+.container {
+  background-color: green;
+}
