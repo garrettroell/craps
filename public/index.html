@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -26,16 +27,17 @@
 <body>
   <div class="container">
     <div class="content-body">
+
       <h1 class="main-title">Craps Simulator</h1>
+
       <div class="craps-table">
-        <img class="craps-table-image" src="./craps_table_design.svg">
+        <img class="craps-table-image" src="./craps_table_design.svg" alt="a crap's table design">
       </div>
 
       <div class="control-panel">
-        <button class="roll-once-button">Roll Once</button>
+        <button class="roll-once-button" id="roll-once-button">Roll Once</button>
         <div class="simulation-controls">
-          <p class="simulation-controls-title">Simulate</p>
-
+          <p class="simulation-controls-title">Simulation controls</p>
           <div class="start-stop-button">Start</div>
           <div class="time-per-roll">
             <p>slider</p>
@@ -47,31 +49,60 @@
       <div class="simulation-stats">
         <p class="simulation-stats-title">Simulation stats</p>
         <div class="left-stats">
-          <p class="simulation-stat">net units +/-: -100</p>
-          <p class="simulation-stat">house edge: 1.5%</p>
-          <p class="simulation-stat">wins: 69,000</p>
-          <p class="simulation-stat">wins: losses: 42,000</p>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">net units +/-:</p>
+            <p class="simulation-stat" id="net-units-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">house edge +/-:</p>
+            <p class="simulation-stat" id="house-edge-value">0%</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">wins:</p>
+            <p class="simulation-stat" id="wins-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">losses:</p>
+            <p class="simulation-stat" id="losses-value">0</p>
+          </div>
         </div>
         <div class="right-stats">
-          <p class="simulation-stat">number of rolls: 69,000</p>
-          <p class="simulation-stat">time simulated: </p>
-          <p class="simulation-stat">24 days, 8 hours, 5 mins</p>
-          <p class="simulation-stat"><br></p>
-          <p class="simulation-stat">number of shooters: 400</p>
-          <p class="simulation-stat">rolls per shooter: 5.43</p>
-
+          <div class="top-right-stats">
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">rolls:</p>
+              <p class="simulation-stat" id="rolls-value">0</p>
+            </div>
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">time simulated:</p>
+              <p class="simulation-stat" id="time-simulated-value">0 seconds</p>
+            </div>
+          </div>
+          <div class="bottom-right-stats">
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">shooters:</p>
+              <p class="simulation-stat" id="shooters-value">0</p>
+            </div>
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">rolls/shooter:</p>
+              <p class="simulation-stat" id="rolls-per-shooter-value">0</p>
+            </div>
+          </div>
         </div>
-
       </div>
-
-
 
     </div>
     <!-- second column -->
     <div class="summary-column">
       <div>
         <h3 class="summary-title">Summary</h3>
-        <p class="summary" id="summary">
+        <div class="simulation-stat-row" style="justify-content: center;">
+          <p class="simulation-stat">Current point: &nbsp;</p>
+          <p class="simulation-stat" id="current-point">Off</p>
+        </div>
+        <!-- <p class="summary">Off</p> -->
+        <p class="summary" id="summary"></p>
+
+        <!-- <p class="summary" id="summary">
           New Point established: 9<br>
           4<br>
           2<br>
@@ -85,7 +116,7 @@
           Winner winner: 8<br>
           Front Line Winner: 7<br>
           New Point established: 10
-        </p>
+        </p> -->
       </div>
 
     </div>
