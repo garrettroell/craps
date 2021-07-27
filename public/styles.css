@@ -1,10 +1,135 @@
 body {
-  background: #5e814d;
-  /* background-image: url("craps_table.png"); */
-  /* background-size: cover; */
-  /* object-fit: contain; */
+  background-color: #476637;
+  margin: 0;
+  margin-top: 50px;
+  padding: 0;
+  text-align: center;
+}
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0px 20px;
 }
 
-.container {
-  /* background-color: green; */
+.content-body {
+  flex: 1;
+}
+
+.summary-column {
+  width: 400px;
+  margin: 0px auto;
+}
+
+@media (max-width: 950px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+.main-title {
+  color: white;
+  margin-top: 0px;
+  font-family: "Alfa Slab One";
+  letter-spacing: 2px;
+  font-weight: lighter;
+}
+
+.craps-table-image {
+  width: min(100%, 500px);
+}
+
+.summary-title {
+  color: white;
+  margin-top: 0px;
+  font-family: "Alfa Slab One";
+  font-size: 25px;
+  letter-spacing: 2px;
+  font-weight: lighter;
+}
+
+.summary {
+  font-family: "Lato";
+  font-size: 18px;
+  color: white;
+}
+
+.control-panel {
+  margin: auto;
+  margin-top: 36px;
+  height: 140px;
+  width: min(100%, 500px);
+  display: flex;
+}
+
+.roll-once-button {
+  height: 140px;
+  width: 140px;
+  margin-right: 25px;
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+  color: #e45252;
+  font-family: "Alfa Slab One";
+  font-size: 30px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.roll-once-button:hover {
+  background-color: #5e814d;
+}
+
+.simulation-controls {
+  position: relative;
+  flex: 1;
+  display: flex;
+  height: 140px;
+  /* width: 140px; */
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+}
+
+.simulation-controls-title {
+  font-family: "Alfa Slab One";
+  color: white;
+  padding: 0px 10px;
+  background-color: #476637;
+  position: absolute;
+  top: -32;
+  right: 27;
+  letter-spacing: 1px;
+  font-size: 18px;
+  /* left: 210; */
+}
+
+.start-stop-button {
+  height: 105px;
+  width: 105px;
+  margin: auto 20px;
+  /* margin-right: 25px; */
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+  color: #e45252;
+  font-family: "Alfa Slab One";
+  font-size: 30px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.time-per-roll-value {
+  font-family: "Lato";
+  color: white;
 }

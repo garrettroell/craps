@@ -4,203 +4,74 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <link>
-  <title>Craps in browser</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
+  <link rel="manifest" href="./favicon/site.webmanifest">
+  <link rel="mask-icon" href="./favicon/safari-pinned-tab.svg" color="#5e814d">
+  <meta name="msapplication-TileColor" content="#5e814d">
+  <meta name="theme-color" content="#5e814d">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Craps Simulator</title>
 </head>
 
-<script>
-  // define some functions
-
-  // function to get the value of a single dice roll
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max) + 1;
-  }
-
-  function secondsToHms(d) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
-
-    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-    return hDisplay + mDisplay + sDisplay;
-  }
-
-  // wait for dom content before adding listeners
-  document.addEventListener('DOMContentLoaded', (event) => {
-
-
-
-    // add a listener to the roll button
-    var rollBtn = document.getElementById('rollBtn');
-    rollBtn.addEventListener("click", function () {
-
-      // get dice result for the roll
-      let die1 = getRandomInt(6)
-      let die2 = getRandomInt(6)
-      let sum = die1 + die2
-
-      // update the result of the roll and the number of rolls
-      document.getElementById('rollSum').innerHTML = sum
-      document.getElementById('numberRolls').innerHTML = parseInt(document.getElementById('numberRolls').innerHTML) + 1
-
-      // up
-      document.getElementById('simulatedTime').innerHTML = secondsToHms(parseInt(document.getElementById('numberRolls').innerHTML) * 25)
-
-
-
-      let currentPoint = document.getElementById('pointNumber').innerHTML
-
-      let pointNumber = currentPoint === 'Off' ? 0 : parseInt(currentPoint);
-
-
-      if (pointNumber === 0 & [7, 11].includes(sum)) {
-        if (document.getElementById('summary').innerHTML.includes('Seven out loser: 7')) {
-          document.getElementById('summary').innerHTML = `Front Line Winner: ${sum}<br>`
-        } else {
-          document.getElementById('summary').innerHTML += `Front Line Winner: ${sum}<br>`
-        }
-        document.getElementById('netUnits').innerHTML = parseInt(document.getElementById('netUnits').innerHTML) + 1
-        rollBtn.innerHTML = 'Come Out Roll'
-      } else if (pointNumber === 0 & [2, 3, 12].includes(sum)) {
-        if (document.getElementById('summary').innerHTML.includes('Seven out loser: 7')) {
-          document.getElementById('summary').innerHTML = `Front Line Loser: ${sum}<br>`
-        } else {
-          document.getElementById('summary').innerHTML += `Front Line Loser: ${sum}<br>`
-        }
-        document.getElementById('netUnits').innerHTML = parseInt(document.getElementById('netUnits').innerHTML) - 1
-        rollBtn.innerHTML = 'Come Out Roll'
-      } else if (pointNumber === 0 & [4, 5, 6, 8, 9, 10].includes(sum)) {
-        if (document.getElementById('summary').innerHTML.includes('Seven out loser: 7')) {
-          document.getElementById('summary').innerHTML = `New Point established: ${sum}<br>`
-        } else {
-          document.getElementById('summary').innerHTML += `New Point established: ${sum}<br>`
-        }
-        document.getElementById('pointNumber').innerHTML = sum
-        rollBtn.innerHTML = `Roll a ${sum} to win`
-
-      } else if (pointNumber !== 0 & sum === pointNumber) {
-        document.getElementById('summary').innerHTML += `Winner winner: ${sum}<br>`
-        document.getElementById('pointNumber').innerHTML = 'Off'
-        document.getElementById('netUnits').innerHTML = parseInt(document.getElementById('netUnits').innerHTML) + 1
-        rollBtn.innerHTML = 'Come Out Roll'
-      } else if (pointNumber !== 0 & sum === 7) {
-        document.getElementById('summary').innerHTML += `Seven out loser: 7<br>`
-        document.getElementById('pointNumber').innerHTML = 'Off'
-        document.getElementById('netUnits').innerHTML = parseInt(document.getElementById('netUnits').innerHTML) - 1
-        rollBtn.innerHTML = 'Come Out Roll'
-      }
-      else {
-        document.getElementById('summary').innerHTML += `${sum}<br>`
-      }
-    });
-
-
-    document.getElementById('simulateFastBtn').addEventListener('click', () => {
-      console.log('fast simulation')
-      if (document.getElementById('simulateFastBtn').innerHTML === 'STOP') {
-        document.getElementById('simulateFastBtn').style.backgroundColor = 'white';
-        document.getElementById('simulateFastBtn').innerHTML = 'Simulate fast';
-      } else {
-        document.getElementById('simulateFastBtn').style.backgroundColor = 'lightred';
-        document.getElementById('simulateFastBtn').innerHTML = 'STOP';
-      }
-    })
-  });
-
-  setInterval(function () {
-    rollBtn.click()
-  }, 1);
-
-
-
-
-</script>
+<script src="./js/crapsLogic.js"></script>
 
 <style>
-  body {
-    margin: 0;
-    margin-top: 50px;
-    padding: 0;
-    text-align: center;
-  }
 
-  @media (max-width: 800px) {
-    .container {
-      flex-direction: column;
-    }
-  }
-
-  .button {
-    width: 480px;
-    height: 40px;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
 </style>
 
 <body>
-  <div class="container" style="display: flex; max-width: 1200px; margin: auto; padding: 0px 20px;">
-    <div style="flex: 1">
-      <h1>Craps simulator</h1>
-
-      <div style="display: flex; justify-content: center;">
-        <h2>Net units up or down: &nbsp;</h2>
-        <h2 id="netUnits">0</h2>
-
+  <div class="container">
+    <div class="content-body">
+      <h1 class="main-title">Craps Simulator</h1>
+      <div class="craps-table">
+        <img class="craps-table-image" src="./craps_table_design.svg">
       </div>
 
-      <div style="display: flex; justify-content: center;">
-        <p>Number of rolls: &nbsp;</p>
-        <p id="numberRolls">0</p>
-      </div>
+      <div class="control-panel">
+        <button class="roll-once-button">Roll Once</button>
+        <div class="simulation-controls">
+          <p class="simulation-controls-title">Simulate</p>
 
-      <div style="display: flex; justify-content: center;">
-        <p>Simulated seconds at table (assuming 25 seconds between roll): &nbsp;</p>
-        <p id="simulatedTime">0</p>
-      </div>
-
-      <div style="display: flex; justify-content: center;margin: 20px;">
-
-        <div
-          style="display: flex; justify-content: center; flex-direction: column;padding: 20px; width: 200px;background-color: antiquewhite;">
-          <p style="color: forestgreen;">Last roll: &nbsp;</p>
-          <p id="rollSum" style="color: forestgreen;font-size: 30px;">--</p>
+          <div class="start-stop-button">Start</div>
+          <div class="time-per-roll">
+            <p>slider</p>
+            <p class="time-per-roll-value">time per roll: 500ms</p>
+          </div>
         </div>
+      </div>
 
-
-
-        <div
-          style="display: flex; justify-content: center; flex-direction: column;padding: 20px; width: 200px;background-color:forestgreen">
-          <p style="color: white;">Point Number: &nbsp;</p>
-          <p id="pointNumber" style="color: white;font-size: 30px;">Off</p>
-        </div>
+      <div class="simulation-stats">
+        <div class="left-stats"></div>
+        <div class="right-stats"></div>
 
       </div>
 
-      <button id="rollBtn" class="button">Come out roll</button>
-      <h1>Simulation Control</h1>
-
-      <div class="slidecontainer">
-
-        <p>Custom range slider:</p>
-        <input type="range" min="1" max="100" value="50" class="slider" id="simulationSpeedRange">
-      </div>
-      <button id="simulateFastBtn" class="button">
-        Begin Simulation
-      </button>
 
 
     </div>
     <!-- second column -->
-    <div style="width: 400px; margin: 0px auto;">
+    <div class="summary-column">
       <div>
-        <h3>Summary</h3>
-        <p id="summary"></p>
+        <h3 class="summary-title">Summary</h3>
+        <p class="summary" id="summary">
+          New Point established: 9<br>
+          4<br>
+          2<br>
+          3<br>
+          8<br>
+          4<br>
+          4<br>
+          8<br>
+          Winner winner: 9<br>
+          New Point established: 8<br>
+          Winner winner: 8<br>
+          Front Line Winner: 7<br>
+          New Point established: 10
+        </p>
       </div>
 
     </div>
