@@ -40,14 +40,12 @@
           <p class="simulation-controls-title">Simulation controls</p>
           <div class="start-stop-button" id="start-stop-button">Start</div>
           <div class="rolls-per-second">
-            <!-- <p class=>slider</p> -->
             <input type="range" min="1" max="100" value="1" class="rolls-per-second-slider"
               id="rolls-per-second-slider">
             <div class="simulation-stat-row">
               <p class="simulation-stat">rolls per second:</p>
               <p class="simulation-stat" id="rolls-per-second-value">1</p>
             </div>
-            <!-- <p class="time-per-roll-value">rolls per second: 1</p> -->
           </div>
         </div>
       </div>
@@ -70,6 +68,10 @@
           <div class="simulation-stat-row">
             <p class="simulation-stat">losses:</p>
             <p class="simulation-stat" id="losses-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">percentile:</p>
+            <p class="simulation-stat" id="percentile-value">--</p>
           </div>
         </div>
         <div class="right-stats">

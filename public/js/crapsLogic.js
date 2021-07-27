@@ -27,9 +27,40 @@ function isNewShooter(summary) {
   return (summary === "") | summary.includes("Seven out loser: 7");
 }
 
+// functions for evaluating percentile of performance
+factorialize = (num) => {
+  if (num < 0) return -1;
+  else if (num == 0) return 1;
+  else {
+    return num * factorialize(num - 1);
+  }
+};
+
+binomialPMF = (numSuccess, prob, numTrials) => {
+  const permutationFactor =
+    factorialize(numTrials) /
+    (factorialize(numSuccess) * factorialize(numTrials - numSuccess));
+  const orderedFactor =
+    Math.pow(prob, numSuccess) * Math.pow(1 - prob, numTrials - numSuccess);
+  return permutationFactor * orderedFactor;
+};
+
+binomialCDF = (numSuccess, prob, numTrials) => {
+  let totalProb = 0;
+  for (let i = 0; i <= numSuccess; i++) {
+    totalProb += binomialPMF(i, prob, numTrials);
+  }
+
+  if (isNaN(totalProb)) {
+    return "breaks >86 wins";
+  } else {
+    return (totalProb * 100).toPrecision(3);
+  }
+};
+
 // wait for dom content before adding listeners
 document.addEventListener("DOMContentLoaded", (event) => {
-  // add a listener to the roll button
+  // make working with dom elements easier
   const rollBtn = document.getElementById("roll-once-button");
   const numRolls = document.getElementById("rolls-value");
   const totalTime = document.getElementById("time-simulated-value");
@@ -44,6 +75,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const rollsPerSecond = document.getElementById("rolls-per-second-value");
   const rollsSpeedSlider = document.getElementById("rolls-per-second-slider");
   const startStopButton = document.getElementById("start-stop-button");
+  const percentile = document.getElementById("percentile-value");
 
   let intervalID;
 
@@ -65,9 +97,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   startStopButton.addEventListener("click", () => {
     if (startStopButton.innerHTML === "Start") {
       // trigger on state
-      // simulationRunning = true;
       startSimulation(rollsPerSecond.innerHTML);
-
       // styles
       startStopButton.innerHTML = "STOP";
       startStopButton.style.backgroundColor = "#E45252";
@@ -75,22 +105,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     } else {
       // trigger off state
       stopSimulation();
-      // simulationRunning = false;
-      // setInterval(function () {
-      //   console.log("simulation running");
-      // }, 500);
       // styles
       startStopButton.innerHTML = "Start";
       startStopButton.style.backgroundColor = "transparent";
       startStopButton.style.color = "#E45252";
     }
   });
-
-  // while (simulationRunning) {
-  // setInterval(function () {
-  //   console.log("simulation running");
-  // }, 500);
-  // }
 
   // function to run for every roll
   rollBtn.addEventListener("click", function () {
@@ -113,6 +133,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if ((pointNumber === 0) & [7, 11].includes(sum)) {
       netUnits.innerHTML = parseInt(netUnits.innerHTML) + 1;
       numWins.innerHTML = parseInt(numWins.innerHTML) + 1;
+      percentile.innerHTML = binomialCDF(
+        parseInt(numWins.innerHTML),
+        0.49293,
+        parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
+      );
+
       // new shooter
       if (summary.innerHTML.includes("Seven out loser: 7")) {
         summary.innerHTML = `Front Line Winner: ${sum}<br>`;
@@ -126,6 +152,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     else if ((pointNumber === 0) & [2, 3, 12].includes(sum)) {
       netUnits.innerHTML = parseInt(netUnits.innerHTML) - 1;
       numLosses.innerHTML = parseInt(numLosses.innerHTML) + 1;
+      percentile.innerHTML = binomialCDF(
+        parseInt(numWins.innerHTML),
+        0.49293,
+        parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
+      );
+
       // new shooter
       if (isNewShooter(summary.innerHTML)) {
         summary.innerHTML = `Front Line Loser: ${sum}<br>`;
@@ -151,6 +183,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     else if ((pointNumber !== 0) & (sum === pointNumber)) {
       netUnits.innerHTML = parseInt(netUnits.innerHTML) + 1;
       numWins.innerHTML = parseInt(numWins.innerHTML) + 1;
+      percentile.innerHTML = binomialCDF(
+        parseInt(numWins.innerHTML),
+        0.49293,
+        parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
+      );
       summary.innerHTML += `Winner winner: ${sum}<br>`;
       currentPoint.innerHTML = "Off";
     }
@@ -158,6 +195,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
     else if ((pointNumber !== 0) & (sum === 7)) {
       netUnits.innerHTML = parseInt(netUnits.innerHTML) - 1;
       numLosses.innerHTML = parseInt(numLosses.innerHTML) + 1;
+      percentile.innerHTML = binomialCDF(
+        parseInt(numWins.innerHTML),
+        0.49293,
+        parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
+      );
       summary.innerHTML += `Seven out loser: 7<br>`;
       currentPoint.innerHTML = "Off";
 
@@ -170,12 +212,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     rollsPerShooter.innerHTML = (
       numRolls.innerHTML / Math.max(numShooters.innerHTML, 1)
     ).toPrecision(2);
-
-    console.log(netUnits.innerHTML, numWins.innerHTML, numLosses.innerHTML);
-    console.log(
-      "denominator",
-      Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
-    );
 
     houseEdge.innerHTML =
       (
