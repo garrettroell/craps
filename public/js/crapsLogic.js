@@ -8,24 +8,19 @@ function getRandomInt(max) {
 function secondsToHms(d) {
   d = Number(d);
 
+  m = Math.floor(d / 60);
+  h = Math.floor(d / 3600);
+  days = Math.floor(d / 86400);
+
   if (d < 60) {
     return d + " seconds";
   } else if (d < 3600) {
-    return Math.floor((d % 3600) / 60) + " minutes";
+    return m + (m === 1 ? " minute" : " minutes");
   } else if (d < 86400) {
-    return Math.floor((d % 3600) / 60) + " hours";
+    return h + (h === 1 ? " hour" : " hours");
   } else if (d < 31536000) {
-    return Math.floor((d % 3600) / 60) + " days";
+    return days + (days === 1 ? " day" : " days");
   }
-
-  // var h = Math.floor(d / 3600);
-  // var m = Math.floor((d % 3600) / 60);
-  // var s = Math.floor((d % 3600) % 60);
-
-  // var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-  // var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-  // var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-  // return hDisplay + mDisplay + sDisplay;
 }
 
 function isNewShooter(summary) {
@@ -45,7 +40,59 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const numLosses = document.getElementById("losses-value");
   const currentPoint = document.getElementById("current-point");
   const rollsPerShooter = document.getElementById("rolls-per-shooter-value");
+  const houseEdge = document.getElementById("house-edge-value");
+  const rollsPerSecond = document.getElementById("rolls-per-second-value");
+  const rollsSpeedSlider = document.getElementById("rolls-per-second-slider");
+  const startStopButton = document.getElementById("start-stop-button");
 
+  let intervalID;
+
+  function stopSimulation() {
+    clearInterval(intervalID);
+  }
+
+  function startSimulation(rollsPerSecond) {
+    intervalID = setInterval(() => {
+      rollBtn.click();
+    }, 1000 / rollsPerSecond);
+  }
+
+  // listen for slider changes and update field
+  rollsSpeedSlider.oninput = function () {
+    rollsPerSecond.innerHTML = this.value;
+  };
+
+  startStopButton.addEventListener("click", () => {
+    if (startStopButton.innerHTML === "Start") {
+      // trigger on state
+      // simulationRunning = true;
+      startSimulation(rollsPerSecond.innerHTML);
+
+      // styles
+      startStopButton.innerHTML = "STOP";
+      startStopButton.style.backgroundColor = "#E45252";
+      startStopButton.style.color = "white";
+    } else {
+      // trigger off state
+      stopSimulation();
+      // simulationRunning = false;
+      // setInterval(function () {
+      //   console.log("simulation running");
+      // }, 500);
+      // styles
+      startStopButton.innerHTML = "Start";
+      startStopButton.style.backgroundColor = "transparent";
+      startStopButton.style.color = "#E45252";
+    }
+  });
+
+  // while (simulationRunning) {
+  // setInterval(function () {
+  //   console.log("simulation running");
+  // }, 500);
+  // }
+
+  // function to run for every roll
   rollBtn.addEventListener("click", function () {
     // get dice result for the roll
     let die1 = getRandomInt(6);
@@ -93,11 +140,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
       currentPoint.innerHTML = sum;
       // new shooter
       if (isNewShooter(summary.innerHTML)) {
-        summary.innerHTML = `New Point established: ${sum}<br>`;
+        summary.innerHTML = `New point established: ${sum}<br>`;
         numShooters.innerHTML = parseInt(numShooters.innerHTML) + 1;
         // same shooter
       } else {
-        summary.innerHTML += `New Point established: ${sum}<br>`;
+        summary.innerHTML += `New point established: ${sum}<br>`;
       }
     }
     // point number is rolled
@@ -117,13 +164,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // during a point, a value that is not the point or seven is rolled
     } else {
       summary.innerHTML += `${sum}<br>`;
-      console.log(sum, pointNumber);
     }
 
     // update rolls per shooter after numShooters is updated
     rollsPerShooter.innerHTML = (
       numRolls.innerHTML / Math.max(numShooters.innerHTML, 1)
     ).toPrecision(2);
+
+    console.log(netUnits.innerHTML, numWins.innerHTML, numLosses.innerHTML);
+    console.log(
+      "denominator",
+      Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
+    );
+
+    houseEdge.innerHTML =
+      (
+        (-100 * netUnits.innerHTML) /
+        Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
+      ).toPrecision(3) + "%";
   });
 
   // document.getElementById("simulateFastBtn").addEventListener("click", () => {

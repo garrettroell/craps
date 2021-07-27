@@ -38,10 +38,16 @@
         <button class="roll-once-button" id="roll-once-button">Roll Once</button>
         <div class="simulation-controls">
           <p class="simulation-controls-title">Simulation controls</p>
-          <div class="start-stop-button">Start</div>
-          <div class="time-per-roll">
-            <p>slider</p>
-            <p class="time-per-roll-value">time per roll: 500ms</p>
+          <div class="start-stop-button" id="start-stop-button">Start</div>
+          <div class="rolls-per-second">
+            <!-- <p class=>slider</p> -->
+            <input type="range" min="1" max="100" value="1" class="rolls-per-second-slider"
+              id="rolls-per-second-slider">
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">rolls per second:</p>
+              <p class="simulation-stat" id="rolls-per-second-value">1</p>
+            </div>
+            <!-- <p class="time-per-roll-value">rolls per second: 1</p> -->
           </div>
         </div>
       </div>
@@ -54,7 +60,7 @@
             <p class="simulation-stat" id="net-units-value">0</p>
           </div>
           <div class="simulation-stat-row">
-            <p class="simulation-stat">house edge +/-:</p>
+            <p class="simulation-stat">house edge (1.41%):</p>
             <p class="simulation-stat" id="house-edge-value">0%</p>
           </div>
           <div class="simulation-stat-row">

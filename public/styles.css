@@ -129,8 +129,21 @@ body {
   cursor: pointer;
 }
 
-.time-per-roll {
+.start-stop-button:hover {
+  background-color: #5e814d;
+}
+
+.rolls-per-second {
   flex: 1;
+  margin: 30px 40px 20px 20px;
+  /* background-color: salmon; */
+}
+
+.rolls-per-second-slider {
+  background-color: grey;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 .time-per-roll-value {
