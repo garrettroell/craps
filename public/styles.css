@@ -17,7 +17,7 @@ body {
 }
 
 .summary-column {
-  width: 400px;
+  width: min(400px, 100%);
   margin: 0px auto;
 }
 
@@ -162,10 +162,6 @@ body {
     margin-bottom: 40px;
     margin: 0px auto 40px auto;
     /* border-radius: 15px; */
-  }
-
-  .simulation-controls {
-    /* position: ; */
   }
 }
 
