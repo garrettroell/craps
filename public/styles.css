@@ -57,7 +57,7 @@ body {
 .control-panel {
   margin: auto;
   margin-top: 36px;
-  height: 100px;
+
   width: min(100%, 500px);
   display: flex;
 }
@@ -94,6 +94,7 @@ body {
   border: 1px solid #fff383;
   box-sizing: border-box;
   border-radius: 27px;
+  margin-bottom: 40px;
 }
 
 .simulation-controls-title {
@@ -102,11 +103,11 @@ body {
   padding: 0px 10px;
   background-color: #476637;
   position: absolute;
-  top: -32px;
+  top: -13px;
   right: 27px;
   letter-spacing: 1px;
   font-size: 18px;
-  /* left: 210; */
+  margin: 0;
 }
 
 .start-stop-button {
@@ -151,12 +152,29 @@ body {
   color: white;
 }
 
+@media (max-width: 600px) {
+  .control-panel {
+    flex-direction: column;
+  }
+  .roll-once-button {
+    min-height: 50px;
+    width: 100%;
+    margin-bottom: 40px;
+    margin: 0px auto 40px auto;
+    /* border-radius: 15px; */
+  }
+
+  .simulation-controls {
+    /* position: ; */
+  }
+}
+
 .simulation-stats {
   position: relative;
   display: flex;
   width: min(100%, 500px);
   height: 225px;
-  margin: 36px auto;
+  margin: 0px auto 40px auto;
   border: 1px solid #fff383;
   box-sizing: border-box;
   border-radius: 27px;
@@ -168,10 +186,11 @@ body {
   color: white;
   padding: 0px 10px;
   background-color: #476637;
-  top: -32px;
+  top: -15px;
   right: 27px;
   letter-spacing: 1px;
   font-size: 18px;
+  margin: 0px;
 }
 
 .left-stats {
