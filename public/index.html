@@ -46,6 +46,11 @@
               <p class="simulation-stat">rolls per second:</p>
               <p class="simulation-stat" id="rolls-per-second-value">60</p>
             </div>
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">odds multiplier:</p>
+              <input type="number" id="quantity" name="odds-multiplier" class="odds-multiplier" min="0" max="5"
+                value="0">
+            </div>
           </div>
         </div>
       </div>
@@ -54,11 +59,23 @@
         <p class="simulation-stats-title">Simulation stats</p>
         <div class="left-stats">
           <div class="simulation-stat-row">
-            <p class="simulation-stat">net units +/-:</p>
-            <p class="simulation-stat" id="net-units-value">0</p>
+            <p class="simulation-stat">pass net +/-:</p>
+            <p class="simulation-stat" id="pass-net-units-value">0</p>
           </div>
           <div class="simulation-stat-row">
-            <p class="simulation-stat">house edge (1.41%):</p>
+            <p class="simulation-stat">pass and odds net +/-:</p>
+            <p class="simulation-stat" id="pass-odds-net-units-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">don't net +/-:</p>
+            <p class="simulation-stat" id="dont-net-units-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">don't and odds net +/-:</p>
+            <p class="simulation-stat" id="dont-odds-net-units-value">0</p>
+          </div>
+          <div class="simulation-stat-row">
+            <p class="simulation-stat">pass house edge:</p>
             <p class="simulation-stat" id="house-edge-value">0%</p>
           </div>
           <div class="simulation-stat-row">

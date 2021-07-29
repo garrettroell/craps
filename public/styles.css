@@ -89,7 +89,7 @@ body {
   position: relative;
   flex: 1;
   display: flex;
-  height: 100px;
+  min-height: 100px;
   /* width: 140px; */
   border: 1px solid #fff383;
   box-sizing: border-box;
@@ -136,7 +136,10 @@ body {
 
 .rolls-per-second {
   flex: 1;
-  margin: 30px 40px 20px 20px;
+  margin: 10px 40px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   /* background-color: salmon; */
 }
 
@@ -247,5 +250,20 @@ body {
   text-align: center;
   width: 100%;
   font-family: "Lato";
+  color: white;
+}
+
+.odds-multiplier {
+  background-color: transparent;
+  border-style: solid;
+  border-radius: 6px;
+  border-color: white;
+  border-width: 1px;
+  color: white;
+  /* padding: auto; */
+  padding-left: 21px;
+}
+
+.odds-multiplier::placeholder {
   color: white;
 }
