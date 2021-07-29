@@ -219,3 +219,33 @@ body {
   margin-top: 0px;
   margin-bottom: 5px;
 }
+
+.roll-counter {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.chart-column {
+  width: 100%;
+  height: 10%;
+  line-height: (2 * height - font-size);
+  margin-top: 50%;
+  position: relative;
+  border-style: solid;
+  border-color: white;
+  border-width: 1px;
+  border-right-width: 0px;
+}
+
+.chart-column-label {
+  position: absolute;
+  bottom: 5px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  font-family: "Lato";
+  color: white;
+}

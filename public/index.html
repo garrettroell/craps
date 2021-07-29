@@ -40,11 +40,11 @@
           <p class="simulation-controls-title">Simulation controls</p>
           <div class="start-stop-button" id="start-stop-button">Start</div>
           <div class="rolls-per-second">
-            <input type="range" min="1" max="100" value="1" class="rolls-per-second-slider"
+            <input type="range" min="1" max="100" value="60" class="rolls-per-second-slider"
               id="rolls-per-second-slider">
             <div class="simulation-stat-row">
               <p class="simulation-stat">rolls per second:</p>
-              <p class="simulation-stat" id="rolls-per-second-value">1</p>
+              <p class="simulation-stat" id="rolls-per-second-value">60</p>
             </div>
           </div>
         </div>
@@ -94,6 +94,10 @@
               <p class="simulation-stat">rolls/shooter:</p>
               <p class="simulation-stat" id="rolls-per-shooter-value">0</p>
             </div>
+            <div class="simulation-stat-row">
+              <p class="simulation-stat">longest roll:</p>
+              <p class="simulation-stat" id="longest-roll">0</p>
+            </div>
           </div>
         </div>
       </div>
@@ -103,28 +107,50 @@
     <div class="summary-column">
       <div>
         <h3 class="summary-title">Summary</h3>
+        <div class="roll-counter">
+          <div class="chart-column" id="roll-counter-2" style="background-color: #e45252;">
+            <p class="chart-column-label">2</p>
+          </div>
+          <div class="chart-column" id="roll-counter-3" style="background-color:  #e45252;">
+            <p class="chart-column-label" style="color: white;">3</p>
+          </div>
+          <div class="chart-column" id="roll-counter-4" style="width: 100%;background-color: #e45252;">
+            <p class="chart-column-label">4</p>
+          </div>
+          <div class="chart-column" id="roll-counter-5" style="background-color:  #e45252;">
+            <p class="chart-column-label" style="color: white;">5</p>
+          </div>
+          <div class="chart-column" id="roll-counter-6" style="background-color:  #e45252;">
+            <p class="chart-column-label">6</p>
+          </div>
+          <div class=" chart-column" id="roll-counter-7" style="background-color:  #e45252;">
+            <p class="chart-column-label" style="color: white;">7</p>
+          </div>
+          <div class="chart-column" id="roll-counter-8" style="background-color:  #e45252;">
+            <p class="chart-column-label">8</p>
+          </div>
+          <div class=" chart-column" id="roll-counter-9" style="background-color:  #e45252;">
+            <p class="chart-column-label" style="color: white;">9</p>
+          </div>
+          <div class="chart-column" id="roll-counter-10" style="background-color:  #e45252;">
+            <p class="chart-column-label">10</p>
+          </div>
+          <div class=" chart-column" id="roll-counter-11" style="background-color:  #e45252;">
+            <p class="chart-column-label" style="color: white;">11</p>
+          </div>
+          <div class="chart-column" id="roll-counter-12" style="background-color:  #e45252;border-right-width: 1px;">
+            <p class="chart-column-label">12</p>
+          </div>
+        </div>
+        <div class="simulation-stat-row" style="justify-content: center;">
+          <p class="simulation-stat">Current shooter rolls: &nbsp;</p>
+          <p class="simulation-stat" id="shooter-roll-length">0</p>
+        </div>
         <div class="simulation-stat-row" style="justify-content: center;">
           <p class="simulation-stat">Current point: &nbsp;</p>
           <p class="simulation-stat" id="current-point">Off</p>
         </div>
-        <!-- <p class="summary">Off</p> -->
         <p class="summary" id="summary"></p>
-
-        <!-- <p class="summary" id="summary">
-          New Point established: 9<br>
-          4<br>
-          2<br>
-          3<br>
-          8<br>
-          4<br>
-          4<br>
-          8<br>
-          Winner winner: 9<br>
-          New Point established: 8<br>
-          Winner winner: 8<br>
-          Front Line Winner: 7<br>
-          New Point established: 10
-        </p> -->
       </div>
 
     </div>

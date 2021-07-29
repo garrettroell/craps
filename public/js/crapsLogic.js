@@ -76,8 +76,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const rollsSpeedSlider = document.getElementById("rolls-per-second-slider");
   const startStopButton = document.getElementById("start-stop-button");
   const percentile = document.getElementById("percentile-value");
+  const longestRoll = document.getElementById("longest-roll");
+  const shooterRollLength = document.getElementById("shooter-roll-length");
 
   let intervalID;
+  let allRollData = {};
+  [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach((num) => {
+    allRollData[num] = 0;
+  });
+  // console.log(allRollData);
 
   function stopSimulation() {
     clearInterval(intervalID);
@@ -122,8 +129,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // update rolls and time
     numRolls.innerHTML = parseInt(numRolls.innerHTML) + 1;
     totalTime.innerHTML = secondsToHms(parseInt(numRolls.innerHTML) * 15);
+    shooterRollLength.innerHTML = parseInt(shooterRollLength.innerHTML) + 1;
+    allRollData[sum] = allRollData[sum] + 1;
 
-    // let currentPoint = document.getElementById("current-point").innerHTML;
+    // let maxRolls = Math.max();
+    // console.log(Object.values(allRollData));
+    let currentColumn;
+    // console.log(Math.max(...Object.values(allRollData)));
+    let maxRollCount = Math.max(...Object.values(allRollData));
+    Object.keys(allRollData).forEach((key) => {
+      currentColumn = document.getElementById(`roll-counter-${key}`);
+      currentColumn.style.height = `${
+        (100 * allRollData[key]) / maxRollCount
+      }%`;
+    });
 
     // pointNumber of zero indicated off state
     let pointNumber =
@@ -202,6 +221,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       );
       summary.innerHTML += `Seven out loser: 7<br>`;
       currentPoint.innerHTML = "Off";
+      // check if roll was the longest yet if so replace longest roll
+      if (
+        parseInt(shooterRollLength.innerHTML) > parseInt(longestRoll.innerHTML)
+      ) {
+        longestRoll.innerHTML = shooterRollLength.innerHTML;
+      }
+
+      // reset current shooter rolls
+      shooterRollLength.innerHTML = 0;
 
       // during a point, a value that is not the point or seven is rolled
     } else {
@@ -219,21 +247,4 @@ document.addEventListener("DOMContentLoaded", (event) => {
         Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
       ).toPrecision(3) + "%";
   });
-
-  // document.getElementById("simulateFastBtn").addEventListener("click", () => {
-  //   console.log("fast simulation");
-  //   if (document.getElementById("simulateFastBtn").innerHTML === "STOP") {
-  //     document.getElementById("simulateFastBtn").style.backgroundColor =
-  //       "white";
-  //     document.getElementById("simulateFastBtn").innerHTML = "Simulate fast";
-  //   } else {
-  //     document.getElementById("simulateFastBtn").style.backgroundColor =
-  //       "lightred";
-  //     document.getElementById("simulateFastBtn").innerHTML = "STOP";
-  //   }
-  // });
 });
-
-// setInterval(function () {
-//   rollBtn.click()
-// }, 1);
