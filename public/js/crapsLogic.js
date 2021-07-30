@@ -54,7 +54,7 @@ binomialCDF = (numSuccess, prob, numTrials) => {
   if (isNaN(totalProb)) {
     return "breaks >86 wins";
   } else {
-    return (totalProb * 100).toPrecision(3);
+    return (totalProb * 100).toFixed(1);
   }
 };
 
@@ -66,7 +66,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const totalTime = document.getElementById("time-simulated-value");
   const summary = document.getElementById("summary");
   const numShooters = document.getElementById("shooters-value");
-  const netUnits = document.getElementById("pass-net-units-value");
+  const passNetUnits = document.getElementById("pass-net-units-value");
+  const passAndOddsNetUnits = document.getElementById(
+    "pass-odds-net-units-value"
+  );
+  const dontPassNetUnits = document.getElementById("dont-net-units-value");
   const numWins = document.getElementById("wins-value");
   const numLosses = document.getElementById("losses-value");
   const currentPoint = document.getElementById("current-point");
@@ -78,14 +82,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const percentile = document.getElementById("percentile-value");
   const longestRoll = document.getElementById("longest-roll");
   const shooterRollLength = document.getElementById("shooter-roll-length");
+  const oddsMultiplierInput = document.getElementById("odds-multiplier");
 
+  // set up odds multiplier
+  let oddsMultiplier = oddsMultiplierInput.value;
+  oddsMultiplierInput.addEventListener("input", () => {
+    oddsMultiplier = oddsMultiplierInput.value;
+  });
+
+  // set up roll tracker
   let intervalID;
   let allRollData = {};
+  let allTallSmall = {};
   [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach((num) => {
     allRollData[num] = 0;
+    if (num !== 7) {
+      allTallSmall[num] = false;
+    }
   });
-  // console.log(allRollData);
 
+  // set up start/stop button
   function stopSimulation() {
     clearInterval(intervalID);
   }
@@ -132,13 +148,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
     shooterRollLength.innerHTML = parseInt(shooterRollLength.innerHTML) + 1;
     allRollData[sum] = allRollData[sum] + 1;
 
-    // let maxRolls = Math.max();
-    // console.log(Object.values(allRollData));
+    if (sum !== 7) {
+      allTallSmall[sum] = true;
+    } else {
+      // no 7
+      [2, 3, 4, 5, 6, 8, 9, 10, 11, 12].forEach((num) => {
+        allTallSmall[num] = false;
+      });
+    }
+
+    Object.keys(allTallSmall).forEach((key) => {
+      // console.log(`number-circle-${key}`);
+      currentCircle = document.getElementById(`number-circle-${key}`);
+      console.log(currentCircle);
+      allTallSmall[key] === true
+        ? (currentCircle.style.backgroundColor = "#e45252")
+        : (currentCircle.style.backgroundColor = "transparent");
+    });
+
     let currentColumn;
-    // console.log(Math.max(...Object.values(allRollData)));
     let maxRollCount = Math.max(...Object.values(allRollData));
     Object.keys(allRollData).forEach((key) => {
-      currentColumn = document.getElementById(`roll-counter-${key}`);
+      currentColumn = document.getElementById(`roll-tracker-${key}`);
       currentColumn.style.height = `${
         (100 * allRollData[key]) / maxRollCount
       }%`;
@@ -150,7 +181,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // front line winner
     if ((pointNumber === 0) & [7, 11].includes(sum)) {
-      netUnits.innerHTML = parseInt(netUnits.innerHTML) + 1;
+      passNetUnits.innerHTML = parseInt(passNetUnits.innerHTML) + 1;
+      dontPassNetUnits.innerHTML = parseInt(dontPassNetUnits.innerHTML) - 1;
+      passAndOddsNetUnits.innerHTML =
+        parseInt(passAndOddsNetUnits.innerHTML) + 1;
       numWins.innerHTML = parseInt(numWins.innerHTML) + 1;
       percentile.innerHTML = binomialCDF(
         parseInt(numWins.innerHTML),
@@ -164,12 +198,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
         numShooters.innerHTML = parseInt(numShooters.innerHTML) + 1;
         // same shooter
       } else {
-        summary.innerHTML += `Front Line Winner: ${sum}<br>`;
+        summary.innerHTML = `Front Line Winner: ${sum}<br>` + summary.innerHTML;
       }
     }
     // front line loser
     else if ((pointNumber === 0) & [2, 3, 12].includes(sum)) {
-      netUnits.innerHTML = parseInt(netUnits.innerHTML) - 1;
+      passNetUnits.innerHTML = parseInt(passNetUnits.innerHTML) - 1;
+      if (sum !== 12) {
+        // 12 is a push
+        dontPassNetUnits.innerHTML = parseInt(dontPassNetUnits.innerHTML) + 1;
+      }
+      passAndOddsNetUnits.innerHTML =
+        parseInt(passAndOddsNetUnits.innerHTML) - 1;
       numLosses.innerHTML = parseInt(numLosses.innerHTML) + 1;
       percentile.innerHTML = binomialCDF(
         parseInt(numWins.innerHTML),
@@ -183,7 +223,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         numShooters.innerHTML = parseInt(numShooters.innerHTML) + 1;
         // same shooter
       } else {
-        summary.innerHTML += `Front Line Loser: ${sum}<br>`;
+        // summary.innerHTML += `Front Line Loser: ${sum}<br>`;
+        summary.innerHTML = `Front Line Loser: ${sum}<br>` + summary.innerHTML;
       }
     }
     // point number established
@@ -195,31 +236,59 @@ document.addEventListener("DOMContentLoaded", (event) => {
         numShooters.innerHTML = parseInt(numShooters.innerHTML) + 1;
         // same shooter
       } else {
-        summary.innerHTML += `New point established: ${sum}<br>`;
+        summary.innerHTML =
+          `New point established: ${sum}<br>` + summary.innerHTML;
       }
     }
     // point number is rolled
     else if ((pointNumber !== 0) & (sum === pointNumber)) {
-      netUnits.innerHTML = parseInt(netUnits.innerHTML) + 1;
+      passNetUnits.innerHTML = parseInt(passNetUnits.innerHTML) + 1;
+      dontPassNetUnits.innerHTML = parseInt(dontPassNetUnits.innerHTML) - 1;
+      if ([4, 10].includes(pointNumber)) {
+        console.log("4 or 10 hit");
+        passAndOddsNetUnits.innerHTML = (
+          parseInt(passAndOddsNetUnits.innerHTML) +
+          1 +
+          2 * oddsMultiplier
+        ).toFixed(1);
+      } else if ([5, 9].includes(pointNumber)) {
+        console.log("5 or 9 hit");
+        passAndOddsNetUnits.innerHTML = (
+          parseInt(passAndOddsNetUnits.innerHTML) +
+          1 +
+          1.5 * oddsMultiplier
+        ).toFixed(1);
+      } else if ([6, 8].includes(pointNumber)) {
+        console.log("6 or 8 hit");
+        passAndOddsNetUnits.innerHTML = (
+          parseInt(passAndOddsNetUnits.innerHTML) +
+          1 +
+          1.2 * oddsMultiplier
+        ).toFixed(1);
+      }
       numWins.innerHTML = parseInt(numWins.innerHTML) + 1;
       percentile.innerHTML = binomialCDF(
         parseInt(numWins.innerHTML),
         0.49293,
         parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
       );
-      summary.innerHTML += `Winner winner: ${sum}<br>`;
+      summary.innerHTML = `Winner winner: ${sum}<br>` + summary.innerHTML;
       currentPoint.innerHTML = "Off";
     }
     // seven out is rolled
     else if ((pointNumber !== 0) & (sum === 7)) {
-      netUnits.innerHTML = parseInt(netUnits.innerHTML) - 1;
+      passNetUnits.innerHTML = parseInt(passNetUnits.innerHTML) - 1;
+      dontPassNetUnits.innerHTML = parseInt(dontPassNetUnits.innerHTML) + 1;
+      passAndOddsNetUnits.innerHTML =
+        parseInt(passAndOddsNetUnits.innerHTML) -
+        (1 + parseInt(oddsMultiplier));
       numLosses.innerHTML = parseInt(numLosses.innerHTML) + 1;
       percentile.innerHTML = binomialCDF(
         parseInt(numWins.innerHTML),
         0.49293,
         parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML)
       );
-      summary.innerHTML += `Seven out loser: 7<br>`;
+      summary.innerHTML = `Seven out loser: 7<br>` + summary.innerHTML;
       currentPoint.innerHTML = "Off";
       // check if roll was the longest yet if so replace longest roll
       if (
@@ -233,18 +302,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
       // during a point, a value that is not the point or seven is rolled
     } else {
-      summary.innerHTML += `${sum}<br>`;
+      summary.innerHTML = `${sum}<br>` + summary.innerHTML;
     }
 
     // update rolls per shooter after numShooters is updated
     rollsPerShooter.innerHTML = (
       numRolls.innerHTML / Math.max(numShooters.innerHTML, 1)
-    ).toPrecision(2);
+    ).toFixed(2);
 
     houseEdge.innerHTML =
       (
-        (-100 * netUnits.innerHTML) /
+        (-100 * passNetUnits.innerHTML) /
         Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
-      ).toPrecision(3) + "%";
+      ).toFixed(1) + "%";
+
+    console.log(allTallSmall);
   });
 });

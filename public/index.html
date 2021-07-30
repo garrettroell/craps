@@ -48,7 +48,7 @@
             </div>
             <div class="simulation-stat-row">
               <p class="simulation-stat">odds multiplier:</p>
-              <input type="number" id="quantity" name="odds-multiplier" class="odds-multiplier" min="0" max="5"
+              <input type="number" id="odds-multiplier" name="odds-multiplier" class="odds-multiplier" min="0" max="5"
                 value="0">
             </div>
           </div>
@@ -67,13 +67,10 @@
             <p class="simulation-stat" id="pass-odds-net-units-value">0</p>
           </div>
           <div class="simulation-stat-row">
-            <p class="simulation-stat">don't net +/-:</p>
+            <p class="simulation-stat">don't pass net +/-:</p>
             <p class="simulation-stat" id="dont-net-units-value">0</p>
           </div>
-          <div class="simulation-stat-row">
-            <p class="simulation-stat">don't and odds net +/-:</p>
-            <p class="simulation-stat" id="dont-odds-net-units-value">0</p>
-          </div>
+
           <div class="simulation-stat-row">
             <p class="simulation-stat">pass house edge:</p>
             <p class="simulation-stat" id="house-edge-value">0%</p>
@@ -123,41 +120,55 @@
     <!-- second column -->
     <div class="summary-column">
       <div>
-        <h3 class="summary-title">Summary</h3>
-        <div class="roll-counter">
-          <div class="chart-column" id="roll-counter-2" style="background-color: #e45252;">
+        <h3 class="summary-title">Roll Tracker</h3>
+        <div class="roll-tracker">
+          <div class="chart-column" id="roll-tracker-2" style="background-color: #e45252;">
             <p class="chart-column-label">2</p>
           </div>
-          <div class="chart-column" id="roll-counter-3" style="background-color:  #e45252;">
+          <div class="chart-column" id="roll-tracker-3" style="background-color:  #e45252;">
             <p class="chart-column-label" style="color: white;">3</p>
           </div>
-          <div class="chart-column" id="roll-counter-4" style="width: 100%;background-color: #e45252;">
+          <div class="chart-column" id="roll-tracker-4" style="width: 100%;background-color: #e45252;">
             <p class="chart-column-label">4</p>
           </div>
-          <div class="chart-column" id="roll-counter-5" style="background-color:  #e45252;">
+          <div class="chart-column" id="roll-tracker-5" style="background-color:  #e45252;">
             <p class="chart-column-label" style="color: white;">5</p>
           </div>
-          <div class="chart-column" id="roll-counter-6" style="background-color:  #e45252;">
+          <div class="chart-column" id="roll-tracker-6" style="background-color:  #e45252;">
             <p class="chart-column-label">6</p>
           </div>
-          <div class=" chart-column" id="roll-counter-7" style="background-color:  #e45252;">
+          <div class=" chart-column" id="roll-tracker-7" style="background-color:  #e45252;">
             <p class="chart-column-label" style="color: white;">7</p>
           </div>
-          <div class="chart-column" id="roll-counter-8" style="background-color:  #e45252;">
+          <div class="chart-column" id="roll-tracker-8" style="background-color:  #e45252;">
             <p class="chart-column-label">8</p>
           </div>
-          <div class=" chart-column" id="roll-counter-9" style="background-color:  #e45252;">
+          <div class=" chart-column" id="roll-tracker-9" style="background-color:  #e45252;">
             <p class="chart-column-label" style="color: white;">9</p>
           </div>
-          <div class="chart-column" id="roll-counter-10" style="background-color:  #e45252;">
+          <div class="chart-column" id="roll-tracker-10" style="background-color:  #e45252;">
             <p class="chart-column-label">10</p>
           </div>
-          <div class=" chart-column" id="roll-counter-11" style="background-color:  #e45252;">
+          <div class=" chart-column" id="roll-tracker-11" style="background-color:  #e45252;">
             <p class="chart-column-label" style="color: white;">11</p>
           </div>
-          <div class="chart-column" id="roll-counter-12" style="background-color:  #e45252;border-right-width: 1px;">
+          <div class="chart-column" id="roll-tracker-12" style="background-color:  #e45252;border-right-width: 1px;">
             <p class="chart-column-label">12</p>
           </div>
+        </div>
+        <h3 class="summary-title" style="margin: 5px;">All Tall Small</h3>
+        <div class="all-tall-small">
+          <div class="number-circle" id="number-circle-2">2</div>
+          <div class="number-circle" id="number-circle-3">3</div>
+          <div class="number-circle" id="number-circle-4">4</div>
+          <div class="number-circle" id="number-circle-5">5</div>
+          <div class="number-circle" id="number-circle-6">6</div>
+          <div class="number-circle" style="border: none;"></div>
+          <div class="number-circle" id="number-circle-8">8</div>
+          <div class="number-circle" id="number-circle-9">9</div>
+          <div class="number-circle" id="number-circle-10">10</div>
+          <div class="number-circle" id="number-circle-11">11</div>
+          <div class="number-circle" id="number-circle-12">12</div>
         </div>
         <div class="simulation-stat-row" style="justify-content: center;">
           <p class="simulation-stat">Current shooter rolls: &nbsp;</p>
