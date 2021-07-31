@@ -1,4 +1,4 @@
-// define some functions
+// define helper functions
 
 // function to get the value of a single dice roll
 function getRandomInt(max) {
@@ -84,6 +84,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const shooterRollLength = document.getElementById("shooter-roll-length");
   const oddsMultiplierInput = document.getElementById("odds-multiplier");
 
+  const bonusOps = document.getElementById("bonus-ops");
+  const allSmalls = document.getElementById("all-smalls");
+  const allTalls = document.getElementById("all-talls");
+  const makeEmAlls = document.getElementById("make-em-alls");
+
+  let allSmall = false;
+  let allTall = false;
+  let makeEmAll = false;
+
   // set up odds multiplier
   let oddsMultiplier = oddsMultiplierInput.value;
   oddsMultiplierInput.addEventListener("input", () => {
@@ -155,12 +164,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
       [2, 3, 4, 5, 6, 8, 9, 10, 11, 12].forEach((num) => {
         allTallSmall[num] = false;
       });
+      bonusOps.innerHTML = parseInt(bonusOps.innerHTML) + 1;
+      allSmall = false;
+      allTall = false;
+      makeEmAll = false;
     }
 
     Object.keys(allTallSmall).forEach((key) => {
-      // console.log(`number-circle-${key}`);
       currentCircle = document.getElementById(`number-circle-${key}`);
-      console.log(currentCircle);
       allTallSmall[key] === true
         ? (currentCircle.style.backgroundColor = "#e45252")
         : (currentCircle.style.backgroundColor = "transparent");
@@ -245,21 +256,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
       passNetUnits.innerHTML = parseInt(passNetUnits.innerHTML) + 1;
       dontPassNetUnits.innerHTML = parseInt(dontPassNetUnits.innerHTML) - 1;
       if ([4, 10].includes(pointNumber)) {
-        console.log("4 or 10 hit");
         passAndOddsNetUnits.innerHTML = (
           parseInt(passAndOddsNetUnits.innerHTML) +
           1 +
           2 * oddsMultiplier
         ).toFixed(1);
       } else if ([5, 9].includes(pointNumber)) {
-        console.log("5 or 9 hit");
         passAndOddsNetUnits.innerHTML = (
           parseInt(passAndOddsNetUnits.innerHTML) +
           1 +
           1.5 * oddsMultiplier
         ).toFixed(1);
       } else if ([6, 8].includes(pointNumber)) {
-        console.log("6 or 8 hit");
         passAndOddsNetUnits.innerHTML = (
           parseInt(passAndOddsNetUnits.innerHTML) +
           1 +
@@ -316,6 +324,39 @@ document.addEventListener("DOMContentLoaded", (event) => {
         Math.max(parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML), 1)
       ).toFixed(1) + "%";
 
-    console.log(allTallSmall);
+    // Check all small, tall, and make em all
+    const isTrue = (currentValue) => currentValue === true;
+    if (!allSmall) {
+      // map to make dictionary of true and false
+      let smallVals = [2, 3, 4, 5, 6].map((num) => {
+        return allTallSmall[num];
+      });
+
+      // check if all values are true
+      allSmall = smallVals.every(isTrue);
+
+      // increment counter
+      if (allSmall) {
+        allSmalls.innerHTML = parseInt(allSmalls.innerHTML) + 1;
+      }
+    }
+    if (!allTall) {
+      // map to make dictionary of true and false
+      let tallVals = [8, 9, 10, 11, 12].map((num) => {
+        return allTallSmall[num];
+      });
+
+      // check if all values are true
+      allTall = tallVals.every(isTrue);
+
+      // increment counter
+      if (allTall) {
+        allTalls.innerHTML = parseInt(allTalls.innerHTML) + 1;
+      }
+    }
+    if (!makeEmAll & (allTall & allSmall)) {
+      makeEmAll = true;
+      makeEmAlls.innerHTML = parseInt(makeEmAlls.innerHTML) + 1;
+    }
   });
 });

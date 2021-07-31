@@ -172,7 +172,8 @@ body {
   position: relative;
   display: flex;
   width: min(100%, 500px);
-  height: 225px;
+  padding: 10px 0px;
+  /* height: 225px; */
   margin: 0px auto 40px auto;
   border: 1px solid #fff383;
   box-sizing: border-box;
@@ -207,6 +208,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.top-right-stats {
+  margin-bottom: 20px;
 }
 
 .simulation-stat-row {
