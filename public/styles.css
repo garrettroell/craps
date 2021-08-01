@@ -230,10 +230,15 @@ body {
 
 .roll-tracker {
   width: 100%;
-  height: 150px;
+  height: 170px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  padding: 15px 27px 0px 27px;
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+  position: relative;
 }
 
 .chart-column {
@@ -271,9 +276,14 @@ body {
 
 .all-tall-small {
   width: 100%;
-  height: 30px;
+  height: 83px;
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 36px;
+  padding: 27px 27px;
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+  position: relative;
 }
 
 .number-circle {
@@ -294,15 +304,33 @@ body {
   /* font: 32px Arial, sans-serif; */
 }
 
+.luck-evaluator-container {
+  border: 1px solid #fff383;
+  box-sizing: border-box;
+  border-radius: 27px;
+  position: relative;
+  padding-top: 15px;
+  padding-bottom: 1px;
+  margin-bottom: 36px;
+  /* z-index: 4; */
+}
+
 .luck-evaluator {
+  position: relative;
   width: 100%;
   height: 150px;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 20px;
-  /* background-color: grey; */
-  /* border-style: solid; */
-  /* border-color: yellow; */
-  /* border-width: 1px; */
+  /* margin-bottom: 20px; */
   list-style: none;
+}
+
+.luck-evaluator:after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 2px solid black;
 }

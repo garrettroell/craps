@@ -371,6 +371,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     let totalDescisions =
       parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML);
     if (totalDescisions >= 3) {
+      // add dotted line by changing psuedo property
+
+      // document.styleSheets[0].insertRule(
+      //   ".luck-evaluator::after{border-color: black;}",
+      //   0
+      // );
+
       // create an object with keys = all possible number of wins, values = PDF output for each value
       let possibleWinValues = [];
 
@@ -394,14 +401,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
 
       Object.keys(PDFValues).forEach((wins) => {
-        console.log(wins, `${(100 * PDFValues[wins]) / maxProb}%`);
+        // console.log(wins, `${(100 * PDFValues[wins]) / maxProb}%`);
         var column = document.createElement("LI");
         column.style.height = `${(100 * PDFValues[wins]) / maxProb}%`;
         column.style.width = "100%";
         if (wins === numWins.innerHTML) {
           column.style.backgroundColor = "white";
-        } else if (parseInt(totalDescisions / 2) === parseInt(wins)) {
-          column.style.backgroundColor = "black";
         } else {
           column.style.backgroundColor = "#e45252";
         }
