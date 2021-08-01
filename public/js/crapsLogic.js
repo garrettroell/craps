@@ -58,6 +58,12 @@ binomialCDF = (numSuccess, prob, numTrials) => {
   }
 };
 
+// function removeAllChildNodes(parent) {
+//   while (parent.firstChild) {
+//     parent.removeChild(parent.firstChild);
+//   }
+// }
+
 // wait for dom content before adding listeners
 document.addEventListener("DOMContentLoaded", (event) => {
   // make working with dom elements easier
@@ -88,6 +94,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const allSmalls = document.getElementById("all-smalls");
   const allTalls = document.getElementById("all-talls");
   const makeEmAlls = document.getElementById("make-em-alls");
+  const luckEvaluator = document.getElementById("luck-evaluator");
 
   let allSmall = false;
   let allTall = false;
@@ -101,6 +108,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   // set up roll tracker
   let intervalID;
+  let PDFValues = {};
   let allRollData = {};
   let allTallSmall = {};
   [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].forEach((num) => {
@@ -358,5 +366,54 @@ document.addEventListener("DOMContentLoaded", (event) => {
       makeEmAll = true;
       makeEmAlls.innerHTML = parseInt(makeEmAlls.innerHTML) + 1;
     }
+
+    // fills in luck evaluator
+    let totalDescisions =
+      parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML);
+    if (totalDescisions >= 3) {
+      // create an object with keys = all possible number of wins, values = PDF output for each value
+      let possibleWinValues = [];
+
+      for (var i = 0; i <= totalDescisions; i++) {
+        possibleWinValues.push(i);
+      }
+
+      PDFValues = {};
+      possibleWinValues.forEach((wins) => {
+        PDFValues[wins] = parseFloat(
+          binomialPMF(wins, 0.49293, totalDescisions)
+        );
+      });
+
+      let maxProb = Math.max.apply(Math, Object.values(PDFValues));
+
+      // console.log(PDFValues, maxProb);
+
+      while (luckEvaluator.firstChild) {
+        luckEvaluator.removeChild(luckEvaluator.firstChild);
+      }
+
+      Object.keys(PDFValues).forEach((wins) => {
+        console.log(wins, `${(100 * PDFValues[wins]) / maxProb}%`);
+        var column = document.createElement("LI");
+        column.style.height = `${(100 * PDFValues[wins]) / maxProb}%`;
+        column.style.width = "100%";
+        if (wins === numWins.innerHTML) {
+          column.style.backgroundColor = "white";
+        } else if (parseInt(totalDescisions / 2) === parseInt(wins)) {
+          column.style.backgroundColor = "black";
+        } else {
+          column.style.backgroundColor = "#e45252";
+        }
+
+        luckEvaluator.appendChild(column);
+      });
+    }
+
+    // the height of the divs is controlled by their probability with the max prob = 100%
+
+    // the current number of wins is a different color than the rest
+
+    // hover gives the number of wins/win percentage
   });
 });

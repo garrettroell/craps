@@ -293,3 +293,16 @@ body {
 
   /* font: 32px Arial, sans-serif; */
 }
+
+.luck-evaluator {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  /* background-color: grey; */
+  /* border-style: solid; */
+  /* border-color: yellow; */
+  /* border-width: 1px; */
+  list-style: none;
+}
