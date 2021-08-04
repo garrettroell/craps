@@ -36,13 +36,23 @@ factorialize = (num) => {
   }
 };
 
+function stdNormalDistribution(x) {
+  return Math.pow(Math.E, -Math.pow(x, 2) / 2) / Math.sqrt(2 * Math.PI);
+}
+
 binomialPMF = (numSuccess, prob, numTrials) => {
-  const permutationFactor =
-    factorialize(numTrials) /
-    (factorialize(numSuccess) * factorialize(numTrials - numSuccess));
-  const orderedFactor =
-    Math.pow(prob, numSuccess) * Math.pow(1 - prob, numTrials - numSuccess);
-  return permutationFactor * orderedFactor;
+  if (numTrials < 150) {
+    const permutationFactor =
+      factorialize(numTrials) /
+      (factorialize(numSuccess) * factorialize(numTrials - numSuccess));
+    const orderedFactor =
+      Math.pow(prob, numSuccess) * Math.pow(1 - prob, numTrials - numSuccess);
+    return permutationFactor * orderedFactor;
+  } else {
+    const stdDev = Math.sqrt(numTrials * prob * (1 - prob));
+    const avg = prob * numTrials;
+    return stdNormalDistribution((numSuccess - avg) / stdDev);
+  }
 };
 
 binomialCDF = (numSuccess, prob, numTrials) => {
@@ -95,6 +105,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const allTalls = document.getElementById("all-talls");
   const makeEmAlls = document.getElementById("make-em-alls");
   const luckEvaluator = document.getElementById("luck-evaluator");
+  const halfWayLine = document.getElementById("half-way-line");
 
   let allSmall = false;
   let allTall = false;
@@ -372,11 +383,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML);
     if (totalDescisions >= 3) {
       // add dotted line by changing psuedo property
-
-      // document.styleSheets[0].insertRule(
-      //   ".luck-evaluator::after{border-color: black;}",
-      //   0
-      // );
+      halfWayLine.style.display = "inline-block";
 
       // create an object with keys = all possible number of wins, values = PDF output for each value
       let possibleWinValues = [];
