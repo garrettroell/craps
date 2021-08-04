@@ -36,6 +36,32 @@ factorialize = (num) => {
   }
 };
 
+// from https://stackoverflow.com/questions/16194730/seeking-a-statistical-javascript-function-to-return-p-value-from-a-z-score
+function GetZPercent(z) {
+  if (z < -6.5) return 0.0;
+  if (z > 6.5) return 1.0;
+
+  var factK = 1;
+  var sum = 0;
+  var term = 1;
+  var k = 0;
+  var loopStop = Math.exp(-23);
+  while (Math.abs(term) > loopStop) {
+    term =
+      (((0.3989422804 * Math.pow(-1, k) * Math.pow(z, k)) /
+        (2 * k + 1) /
+        Math.pow(2, k)) *
+        Math.pow(z, k + 1)) /
+      factK;
+    sum += term;
+    k++;
+    factK *= k;
+  }
+  sum += 0.5;
+
+  return sum;
+}
+
 function stdNormalDistribution(x) {
   return Math.pow(Math.E, -Math.pow(x, 2) / 2) / Math.sqrt(2 * Math.PI);
 }
@@ -56,23 +82,18 @@ binomialPMF = (numSuccess, prob, numTrials) => {
 };
 
 binomialCDF = (numSuccess, prob, numTrials) => {
-  let totalProb = 0;
-  for (let i = 0; i <= numSuccess; i++) {
-    totalProb += binomialPMF(i, prob, numTrials);
-  }
-
-  if (isNaN(totalProb)) {
-    return "breaks >86 wins";
-  } else {
+  if (numTrials < 150) {
+    let totalProb = 0;
+    for (let i = 0; i <= numSuccess; i++) {
+      totalProb += binomialPMF(i, prob, numTrials);
+    }
     return (totalProb * 100).toFixed(1);
+  } else {
+    const stdDev = Math.sqrt(numTrials * prob * (1 - prob));
+    const avg = prob * numTrials;
+    return (100 * GetZPercent((numSuccess - avg) / stdDev)).toFixed(1);
   }
 };
-
-// function removeAllChildNodes(parent) {
-//   while (parent.firstChild) {
-//     parent.removeChild(parent.firstChild);
-//   }
-// }
 
 // wait for dom content before adding listeners
 document.addEventListener("DOMContentLoaded", (event) => {
