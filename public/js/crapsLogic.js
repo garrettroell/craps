@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const luckEvaluatorPercentile = document.getElementById(
     "luck-evaluator-percentile"
   );
+  const distributionType = document.getElementById("distribution-type");
 
   let allSmall = false;
   let allTall = false;
@@ -412,9 +413,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
       parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML);
 
     // one time additions
-    if (totalDescisions == 3) {
+    if (totalDescisions === 3) {
       // before halfway line is display: none
       halfWayLine.style.display = "inline-block";
+      distributionType.style.display = "block";
+    }
+
+    // one time additions
+    if (totalDescisions === 150) {
+      // before halfway line is display: none
+      distributionType.innerHTML = "Normal Approximation";
     }
 
     // recurring additions

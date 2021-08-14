@@ -312,7 +312,7 @@ body {
   border-radius: 27px;
   position: relative;
   padding: 15px 27px 1px 27px;
-  margin-bottom: 36px;
+  margin-bottom: 0px;
   /* z-index: 4; */
 }
 
@@ -375,4 +375,17 @@ body {
   display: flex;
   align-items: flex-end;
   list-style: none;
+}
+.distribution-type-container {
+  height: 36px;
+}
+.distribution-type {
+  color: white;
+  font-family: "Lato";
+  font-size: 14px;
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: 16px;
+  margin-right: 27px;
+  display: none;
 }
