@@ -248,11 +248,11 @@ body {
   margin-top: 50%;
   position: relative;
   border-style: solid;
-  border-color: #fff383;
+  border-color: white;
   border-width: 1px;
   border-right-width: 0px;
   border-bottom-width: 0px;
-  border-top-color: #fff383;
+  /* border-top-color: #fff383; */
 }
 
 .chart-column-label {
@@ -331,19 +331,8 @@ body {
   font-family: "Lato";
   font-size: 16px;
   text-align: center;
-  /* margin-top: 0px;
-  margin-bottom: 5px; */
+  /* display: none; */
 }
-
-/* .luck-evaluator:after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  border-left: 2px solid black;
-} */
 
 .half-way-line {
   position: absolute;
@@ -353,4 +342,19 @@ body {
   left: 50%;
   border-left: 2px solid black;
   display: none;
+}
+
+.luck-evaluator-info {
+  color: white;
+  font-family: "Lato";
+  font-size: 14px;
+  height: 50px;
+  width: 150px;
+  position: absolute;
+  text-align: left;
+  display: none;
+}
+
+.luck-evaluator-info p {
+  margin: 2px;
 }

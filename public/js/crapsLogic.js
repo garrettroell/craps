@@ -127,6 +127,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const makeEmAlls = document.getElementById("make-em-alls");
   const luckEvaluator = document.getElementById("luck-evaluator");
   const halfWayLine = document.getElementById("half-way-line");
+  const luckEvaluatorInfo = document.getElementById("luck-evaluator-info");
+  const luckEvaluatorWins = document.getElementById("luck-evaluator-wins");
+  const luckEvaluatorLosses = document.getElementById("luck-evaluator-losses");
+  const luckEvaluatorPercentile = document.getElementById(
+    "luck-evaluator-percentile"
+  );
 
   let allSmall = false;
   let allTall = false;
@@ -402,10 +408,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // fills in luck evaluator
     let totalDescisions =
       parseInt(numWins.innerHTML) + parseInt(numLosses.innerHTML);
-    if (totalDescisions >= 3) {
-      // add dotted line by changing psuedo property
-      halfWayLine.style.display = "inline-block";
 
+    // one time additions
+    if (totalDescisions == 3) {
+      // before halfway line is display: none
+      halfWayLine.style.display = "inline-block";
+    }
+
+    // recurring additions
+    if (totalDescisions >= 3) {
       // create an object with keys = all possible number of wins, values = PDF output for each value
       let possibleWinValues = [];
 
@@ -422,31 +433,51 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
       let maxProb = Math.max.apply(Math, Object.values(PDFValues));
 
-      // console.log(PDFValues, maxProb);
-
       while (luckEvaluator.firstChild) {
         luckEvaluator.removeChild(luckEvaluator.firstChild);
       }
 
       Object.keys(PDFValues).forEach((wins) => {
-        // console.log(wins, `${(100 * PDFValues[wins]) / maxProb}%`);
+        // add the column to the chart
         var column = document.createElement("LI");
         column.style.height = `${(100 * PDFValues[wins]) / maxProb}%`;
         column.style.width = "100%";
-        if (wins === numWins.innerHTML) {
-          column.style.backgroundColor = "white";
-        } else {
-          column.style.backgroundColor = "#e45252";
-        }
 
-        luckEvaluator.appendChild(column);
+        // set the color of the column to indicate the current number of wins
+        column.style.backgroundColor =
+          wins === numWins.innerHTML ? "white" : "#e45252";
+
+        column.addEventListener("mouseenter", () => {
+          // update wins and losses values
+          luckEvaluatorWins.innerHTML = `wins: ${wins}`;
+          luckEvaluatorLosses.innerHTML = `losses: ${
+            Object.keys(PDFValues).length - 1 - wins
+          }`;
+          luckEvaluatorPercentile.innerHTML = `percentile: ${binomialCDF(
+            wins,
+            0.49293,
+            Object.keys(PDFValues).length - 1
+          )}`;
+          // show the info div
+          luckEvaluatorInfo.style.display = "block";
+          // change the column color
+          column.style.borderStyle = "solid";
+          column.style.borderWidth = "1px";
+          column.style.borderColor = "#fff383";
+        });
+
+        column.addEventListener("mouseleave", () => {
+          // hide info div
+          luckEvaluatorInfo.style.display = "none";
+
+          // change column color back
+          column.style.borderStyle = "none";
+        });
+
+        if (PDFValues[wins] > 0.001) {
+          luckEvaluator.appendChild(column);
+        }
       });
     }
-
-    // the height of the divs is controlled by their probability with the max prob = 100%
-
-    // the current number of wins is a different color than the rest
-
-    // hover gives the number of wins/win percentage
   });
 });
