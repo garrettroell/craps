@@ -126,6 +126,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const allTalls = document.getElementById("all-talls");
   const makeEmAlls = document.getElementById("make-em-alls");
   const luckEvaluator = document.getElementById("luck-evaluator");
+  const luckEvaluatorLeft = document.getElementById("luck-evaluator-left");
+  const luckEvaluatorRight = document.getElementById("luck-evaluator-right");
   const halfWayLine = document.getElementById("half-way-line");
   const luckEvaluatorInfo = document.getElementById("luck-evaluator-info");
   const luckEvaluatorWins = document.getElementById("luck-evaluator-wins");
@@ -433,30 +435,71 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
       let maxProb = Math.max.apply(Math, Object.values(PDFValues));
 
-      while (luckEvaluator.firstChild) {
-        luckEvaluator.removeChild(luckEvaluator.firstChild);
+      while (luckEvaluatorLeft.firstChild) {
+        luckEvaluatorLeft.removeChild(luckEvaluatorLeft.firstChild);
+      }
+      while (luckEvaluatorRight.firstChild) {
+        luckEvaluatorRight.removeChild(luckEvaluatorRight.firstChild);
       }
 
       Object.keys(PDFValues).forEach((wins) => {
+        let losses = Object.keys(PDFValues).length - wins - 1;
+        console.log(wins, losses);
         // add the column to the chart
         var column = document.createElement("LI");
         column.style.height = `${(100 * PDFValues[wins]) / maxProb}%`;
         column.style.width = "100%";
+        column.style.flex = parseInt(wins) === losses ? "1" : "2";
 
         // set the color of the column to indicate the current number of wins
         column.style.backgroundColor =
           wins === numWins.innerHTML ? "white" : "#e45252";
 
+        if (parseInt(wins) < losses && PDFValues[wins] > 0.001) {
+          console.log("Append column for", wins, "wins to left side");
+          luckEvaluatorLeft.appendChild(column);
+        }
+        if (parseInt(wins) === losses && PDFValues[wins] > 0.001) {
+          luckEvaluatorRight.appendChild(column);
+          var columnClone = column.cloneNode(true);
+          columnClone.addEventListener("mouseenter", () => {
+            // update wins and losses values
+            luckEvaluatorWins.innerHTML = `wins: ${wins}`;
+            luckEvaluatorLosses.innerHTML = `losses: ${losses}`;
+            luckEvaluatorPercentile.innerHTML = `percentile: ${binomialCDF(
+              parseInt(wins),
+              0.49293,
+              parseInt(wins) + losses
+            )}`;
+            // show the info div
+            luckEvaluatorInfo.style.display = "block";
+            // change the column color
+            columnClone.style.borderStyle = "solid";
+            columnClone.style.borderWidth = "1px";
+            columnClone.style.borderColor = "#fff383";
+          });
+
+          columnClone.addEventListener("mouseleave", () => {
+            // hide info div
+            luckEvaluatorInfo.style.display = "none";
+
+            // change column color back
+            columnClone.style.borderStyle = "none";
+          });
+          luckEvaluatorLeft.appendChild(columnClone);
+        }
+        if (parseInt(wins) > losses && PDFValues[wins] > 0.001) {
+          luckEvaluatorRight.appendChild(column);
+        }
+
         column.addEventListener("mouseenter", () => {
           // update wins and losses values
           luckEvaluatorWins.innerHTML = `wins: ${wins}`;
-          luckEvaluatorLosses.innerHTML = `losses: ${
-            Object.keys(PDFValues).length - 1 - wins
-          }`;
+          luckEvaluatorLosses.innerHTML = `losses: ${losses}`;
           luckEvaluatorPercentile.innerHTML = `percentile: ${binomialCDF(
-            wins,
+            parseInt(wins),
             0.49293,
-            Object.keys(PDFValues).length - 1
+            parseInt(wins) + losses
           )}`;
           // show the info div
           luckEvaluatorInfo.style.display = "block";
@@ -473,10 +516,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
           // change column color back
           column.style.borderStyle = "none";
         });
-
-        if (PDFValues[wins] > 0.001) {
-          luckEvaluator.appendChild(column);
-        }
       });
     }
   });
