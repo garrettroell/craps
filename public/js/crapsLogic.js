@@ -136,6 +136,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     "luck-evaluator-percentile"
   );
   const distributionType = document.getElementById("distribution-type");
+  const luckEvaluatorPlaceHolder = document.getElementById(
+    "luck-evaluator-placeholder"
+  );
 
   let allSmall = false;
   let allTall = false;
@@ -417,6 +420,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // before halfway line is display: none
       halfWayLine.style.display = "inline-block";
       distributionType.style.display = "block";
+      luckEvaluatorPlaceHolder.style.display = "none";
+      luckEvaluatorLeft.style.display = "flex";
+      luckEvaluatorRight.style.display = "flex";
     }
 
     // one time additions
