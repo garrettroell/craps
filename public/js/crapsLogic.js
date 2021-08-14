@@ -450,6 +450,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         luckEvaluatorRight.removeChild(luckEvaluatorRight.firstChild);
       }
 
+      let numLeftColumns = 0;
+      let numRightColumns = 0;
+
       Object.keys(PDFValues).forEach((wins) => {
         let losses = Object.keys(PDFValues).length - wins - 1;
         console.log(wins, losses);
@@ -464,7 +467,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           wins === numWins.innerHTML ? "white" : "#e45252";
 
         if (parseInt(wins) < losses && PDFValues[wins] > 0.001) {
-          console.log("Append column for", wins, "wins to left side");
+          numLeftColumns += 1;
           luckEvaluatorLeft.appendChild(column);
         }
         if (parseInt(wins) === losses && PDFValues[wins] > 0.001) {
@@ -496,7 +499,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
           });
           luckEvaluatorLeft.appendChild(columnClone);
         }
-        if (parseInt(wins) > losses && PDFValues[wins] > 0.001) {
+        if (parseInt(wins) > losses && numLeftColumns > numRightColumns) {
+          numRightColumns += 1;
           luckEvaluatorRight.appendChild(column);
         }
 
