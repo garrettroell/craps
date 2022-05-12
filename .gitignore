@@ -69,3 +69,4 @@ firebase.json
 .firebaserc
 
 *.DS_Store
+.vscode
