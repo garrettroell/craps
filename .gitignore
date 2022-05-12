@@ -67,3 +67,5 @@ node_modules/
 
 firebase.json
 .firebaserc
+
+*.DS_Store

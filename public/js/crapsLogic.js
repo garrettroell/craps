@@ -461,7 +461,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
       Object.keys(PDFValues).forEach((wins) => {
         let losses = Object.keys(PDFValues).length - wins - 1;
-        console.log(wins, losses);
         // add the column to the chart
         var column = document.createElement("LI");
         column.style.height = `${(100 * PDFValues[wins]) / maxProb}%`;
