@@ -390,6 +390,10 @@ body {
 }
 
 
+.footer-spacer{
+  height: 45px;
+}
+
 .footer{
   position: fixed;
   bottom: 0px;
